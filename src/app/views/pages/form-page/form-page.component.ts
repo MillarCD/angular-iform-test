@@ -1,0 +1,42 @@
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+
+import { NgClass } from '@angular/common';
+
+@Component({
+  selector: 'app-form-page',
+  imports: [
+    NgClass, ReactiveFormsModule
+  ],
+  templateUrl: './form-page.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FormPageComponent {
+
+  private fb = inject(FormBuilder);
+  submitted = signal<boolean>(false);
+  showSuccessMessage = signal<boolean>(false);
+
+
+  formGroup = this.fb.group({
+    firstName: ["", Validators.required],
+    lastName: ["", Validators.required],
+    email: ["", [Validators.required, Validators.email]],
+    age: ["", [Validators.required, Validators.min(0)]],
+    submitToday: [true],
+  })
+
+  onSubmit(): void {
+    this.submitted.set(true);
+
+    if (this.formGroup.invalid) {
+      return
+    }
+
+    console.log("Form submitted:", this.formGroup.value)
+
+    // Show success message (you could use a toast service here)
+    this.showSuccessMessage.set(true)
+    setTimeout(() => (this.showSuccessMessage.set(false)), 3000)
+  }
+}

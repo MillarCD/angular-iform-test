@@ -1,0 +1,121 @@
+<div class="flex min-h-screen items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-6 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-800">Personal Information</h2>
+      <p class="text-sm text-gray-500">Please fill out all the required fields below.</p>
+    </div>
+
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="p-6">
+      <div class="space-y-4">
+        <div class="space-y-2">
+          <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+          <input
+            id="firstName"
+            formControlName="firstName"
+            type="text"
+            placeholder="Enter your first name"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [ngClass]="{'border-red-500': submitted() && formGroup.get('firstName')?.errors}"
+          />
+          @if (submitted() && formGroup.get('firstName')?.errors) {
+            <div class="text-red-500 text-xs mt-1">
+              First name is required
+            </div>
+
+          }
+        </div>
+
+        <div class="space-y-2">
+          <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+          <input
+            id="lastName"
+            formControlName="lastName"
+            type="text"
+            placeholder="Enter your last name"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [ngClass]="{'border-red-500': submitted() && formGroup.get('lastName')?.errors}"
+          />
+          @if (submitted() && formGroup.get('lastName')?.errors) {
+            <div class="text-red-500 text-xs mt-1">
+              Last name is required
+            </div>
+          }
+        </div>
+
+        <div class="space-y-2">
+          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            placeholder="your.email@example.com"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [ngClass]="{'border-red-500': submitted() && formGroup.get('email')?.errors}"
+          />
+
+          @if (submitted() && formGroup.get('email')?.errors?.['required']) {
+            <div class="text-red-500 text-xs mt-1">
+              Email is required
+            </div>
+          }
+
+          @if (submitted() && formGroup.get('email')?.errors?.['email']) {
+            <div class="text-red-500 text-xs mt-1">
+              Please enter a valid email address
+            </div>
+          }
+        </div>
+
+        <div class="space-y-2">
+          <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
+          <input
+            id="age"
+            formControlName="age"
+            type="number"
+            placeholder="Enter your age"
+            min="0"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [ngClass]="{'border-red-500': submitted() && formGroup.get('age')?.errors}"
+          />
+          @if (submitted() && formGroup.get('age')?.errors?.['required']) {
+            <div class="text-red-500 text-xs mt-1">
+              Age is required
+            </div>
+          }
+          @if (submitted() && formGroup.get('age')?.errors?.['min']) {
+            <div class="text-red-500 text-xs mt-1">
+              Age must be a positive number
+            </div>
+          }
+        </div>
+
+        <div class="flex items-center space-x-2 pt-2">
+          <input
+            id="submitToday"
+            formControlName="submitToday"
+            type="checkbox"
+            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <label for="submitToday" class="text-sm text-gray-700 cursor-pointer">
+            Submit today?
+          </label>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <button
+          type="submit"
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Submit
+        </button>
+      </div>
+
+      @if (showSuccessMessage()) {
+        <div class="mt-4 p-3 bg-green-100 text-green-700 rounded-md">
+          Form submitted successfully!
+        </div>
+      }
+    </form>
+  </div>
+</div>
