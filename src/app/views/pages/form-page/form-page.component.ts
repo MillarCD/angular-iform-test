@@ -34,10 +34,27 @@ export class FormPageComponent {
       return
     }
 
-    console.log("Form submitted:", this.formGroup.value)
+    if (!(window as any).grecaptcha) {
+      console.error('reCAPTCHA no está cargado.');
+      return;
+    }
 
-    // Show success message (you could use a toast service here)
-    this.showSuccessMessage.set(true)
-    setTimeout(() => (this.showSuccessMessage.set(false)), 3000)
+    (window as any).grecaptcha.ready(async () => {
+      const token = await (window as any).grecaptcha.execute('6Lcm2BorAAAAADej42ZZ9wcnmi8Bmeht3E0YoUyY', {action: 'submit'})
+
+      console.log('Token reCAPTCHA:', token);
+
+      this.sendForm();
+
+      // Show success message (you could use a toast service here)
+      this.showSuccessMessage.set(true)
+      setTimeout(() => (this.showSuccessMessage.set(false)), 3000)
+    });
+
+
+  }
+
+  private sendForm(): void {
+    console.log("Form submitted:", this.formGroup.value)
   }
 }
