@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-form-page',
   imports: [
-    NgClass, ReactiveFormsModule
+    NgClass, ReactiveFormsModule, RouterLink
   ],
   templateUrl: './form-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
