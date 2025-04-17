@@ -10,7 +10,7 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-form-page',
   imports: [
-    NgClass, ReactiveFormsModule, RouterLink
+    NgClass, ReactiveFormsModule
   ],
   templateUrl: './form-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
