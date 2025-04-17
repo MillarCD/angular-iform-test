@@ -19,7 +19,7 @@ const viewsRoutes: Routes = [
       },
       {
         path: '**',
-        component: NotFoundPageComponent
+        redirectTo: 'form'
       }
     ]
   }

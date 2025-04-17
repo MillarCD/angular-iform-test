@@ -3,6 +3,9 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormService } from '../../../form/services/form.service';
+import { FormRequest } from '../../../form/interfaces/form-request.interface';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-form-page',
@@ -18,12 +21,14 @@ export class FormPageComponent {
   submitted = signal<boolean>(false);
   showSuccessMessage = signal<boolean>(false);
 
+  private formService = inject(FormService);
+
 
   formGroup = this.fb.group({
     firstName: ["", Validators.required],
     lastName: ["", Validators.required],
     email: ["", [Validators.required, Validators.email]],
-    age: ["", [Validators.required, Validators.min(0)]],
+    age: [0, [Validators.required, Validators.min(0)]],
     submitToday: [true],
   })
 
@@ -39,12 +44,27 @@ export class FormPageComponent {
       return;
     }
 
+    const { email = '',
+      firstName = '',
+      lastName = '',
+      age = 20,
+      submitToday = false } =this.formGroup.value;
+
     (window as any).grecaptcha.ready(async () => {
       const token = await (window as any).grecaptcha.execute('6Lcm2BorAAAAADej42ZZ9wcnmi8Bmeht3E0YoUyY', {action: 'submit'})
 
-      console.log('Token reCAPTCHA:', token);
+      // console.log('Token reCAPTCHA:', token);
 
-      this.sendForm();
+      const res = await this.sendForm({
+        email: email!,
+        firstName: firstName!,
+        lastName: lastName!,
+        age: age!,
+        submitToday: submitToday!,
+        token
+      });
+
+      if (!res) return;
 
       // Show success message (you could use a toast service here)
       this.showSuccessMessage.set(true)
@@ -54,7 +74,10 @@ export class FormPageComponent {
 
   }
 
-  private sendForm(): void {
-    console.log("Form submitted:", this.formGroup.value)
+  private async sendForm(formRequest: FormRequest): Promise<boolean> {
+    const res = await firstValueFrom(this.formService.createForm(formRequest))
+    console.log('response: ', res);
+
+    return res;
   }
 }
