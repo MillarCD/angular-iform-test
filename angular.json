@@ -1,5 +1,4 @@
 {
-  "baseHref": "angular-iform-test",
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
@@ -14,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "baseHref": "angular-iform-test",
             "outputPath": "dist/iform",
             "index": "src/index.html",
             "browser": "src/main.ts",
