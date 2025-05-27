@@ -20,6 +20,7 @@ export class FormPageComponent {
   private fb = inject(FormBuilder);
   submitted = signal<boolean>(false);
   showSuccessMessage = signal<boolean>(false);
+  isLoading = signal<boolean>(false);
 
   private formService = inject(FormService);
 
@@ -51,6 +52,7 @@ export class FormPageComponent {
       submitToday = false } =this.formGroup.value;
 
     (window as any).grecaptcha.ready(async () => {
+      this.isLoading.set(true);
       const token = await (window as any).grecaptcha.execute('6Lcm2BorAAAAADej42ZZ9wcnmi8Bmeht3E0YoUyY', {action: 'submit'})
 
       // console.log('Token reCAPTCHA:', token);
@@ -64,6 +66,7 @@ export class FormPageComponent {
         token
       });
 
+      this.isLoading.set(false);
       if (!res) return;
 
       // Show success message (you could use a toast service here)
@@ -76,6 +79,7 @@ export class FormPageComponent {
 
   private async sendForm(formRequest: FormRequest): Promise<boolean> {
     const res = await firstValueFrom(this.formService.createForm(formRequest))
+      .catch(() => false);
     console.log('response: ', res);
 
     return res;
